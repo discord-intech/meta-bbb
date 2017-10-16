@@ -9,6 +9,7 @@ inherit core-image
 
 CORE_OS = " \
     openssh openssh-keygen openssh-sftp-server \
+    psplash \
     term-prompt \
     tzdata \
  "
@@ -21,10 +22,12 @@ KERNEL_EXTRA_INSTALL = " \
 WIFI_SUPPORT = " \
     crda \
     iw \
+    linux-firmware-ath9k \
     linux-firmware-ralink \
     linux-firmware-rtl8192ce \
     linux-firmware-rtl8192cu \
     linux-firmware-rtl8192su \
+    linux-firmware-wl18xx \
     wireless-tools \
     wpa-supplicant \
  "
@@ -37,10 +40,12 @@ DEV_SDK_INSTALL = " \
     cpp-symlinks \
     diffutils \
     file \
-    gcc \
-    gcc-symlinks \
     g++ \
     g++-symlinks \
+    gdb \
+    gdbserver \
+    gcc \
+    gcc-symlinks \
     gettext \
     git \
     ldd \
@@ -51,6 +56,7 @@ DEV_SDK_INSTALL = " \
     perl-modules \
     pkgconfig \
     python-modules \
+    python3-modules \
  "
 
 DEV_EXTRAS = " \
@@ -63,28 +69,41 @@ DEV_EXTRAS = " \
  "
 
 EXTRA_TOOLS_INSTALL = " \
+    acpid \
     bc \
     bzip2 \
+    cursor-blink \
     devmem2 \
     dosfstools \
+    emmc-installer \
     ethtool \
     findutils \
     i2c-tools \
-    iftop \
-    iperf \
+    iperf3 \
     htop \
     less \
+    memtester \
     nano \
+    netcat \
     procps \
     rsync \
     sysfsutils \
     tcpdump \
     unzip \
     util-linux \
-    vim-tiny \
+    util-linux-blkid \
     wget \
     zip \
  "
+
+MQTT = " \
+    libmosquitto1 \
+    libmosquittopp1 \
+    mosquitto \
+    mosquitto-dev \
+    mosquitto-clients \
+    python-paho-mqtt \
+"
 
 IMAGE_INSTALL += " \
     ${CORE_OS} \
@@ -92,6 +111,7 @@ IMAGE_INSTALL += " \
     ${DEV_EXTRAS} \
     ${EXTRA_TOOLS_INSTALL} \
     ${KERNEL_EXTRA_INSTALL} \
+    ${MQTT} \
     ${WIFI_SUPPORT} \
  "
 

@@ -1,19 +1,19 @@
 This layer depends on:
 
     URI: git://git.yoctoproject.org/poky.git
-    branch: jethro 
+    branch: pyro
     revision: HEAD
-    commit: 7fdad70 
+    commit: 072430b
 
     URI: git://git.openembedded.org/meta-openembedded
-    branch: jethro 
+    branch: pyro
     revision: HEAD
-    commit: 4fdb203 
+    commit: 5e82995
 
-    URI: https://github.com/meta-qt5/meta-qt5.git
-    branch: fido
+    URI: git://code.qt.io/yocto/meta-qt5.git
+    branch: 5.9
     revision: HEAD
-    commit: 0454fb0 
+    commit: 6e6e8df
 
     meta-bbb layer maintainer: Scott Ellis <scott@jumpnowtek.com>
 
@@ -22,15 +22,11 @@ Instructions for using this layer can be found on the [jumpnowtek site][jumpnowt
 
 Major Software Versions
 
-* Yocto 2.0.0 [jethro] branch
-* Linux kernel 4.3.2 (linux-stable)
-* U-Boot 2015.07
+* Yocto 2.3.2 [pyro] branch
+* Linux kernel 4.9.50 (4.4.88 and 4.13.2 available)
+* U-Boot 2017.05
 
-The qt5-image includes [Qt 5.5.1][qt] built for framebuffer use only.
-
-Launch Qt5 apps with the following args 
-
-    -platform linuxfb [-plugin evdevkeyboard] [-plugin evdevmouse] [-plugin evdevtouch]
+The qt5-image includes [Qt 5.9.2][qt] built for framebuffer use only.
 
 There is a demo qt5 app installed - [tspress][tspress].
 
@@ -46,8 +42,10 @@ There is a dtb without HDMI/display support, freeing up some GPIO pins and UART5
 
 And there are dtbs for a couple of touchscreen capes
 
-* bbb-4dcape70.dtb - for the 4D Systems LCD, 7-inch, 800x480 touchscreen 
-* bbb-nh5cape.dtb - for the NewHaven Capacitive, 5-inch, 800x480 touchscreen 
+* bbb-4dcape43t.dtb - 4D Systems 4.3 inch touchscreen, 480x272 
+* bbb-4dcape70t.dtb - 4D Systems 7 inch touchscreen, 800x480 
+* bbb-nh5cape.dtb - NewHaven Capacitive, 5-inch, 800x480 touchscreen 
+* bbb-nhd7cape.dtb - NewHaven 7-inch display capes, 800x480 touchscreen
 
 All the dtbs include the following
 
@@ -68,17 +66,10 @@ You can mount the boot partition like this
     -rwxr-xr-x 1 root root 410860 Jul 24 09:00 u-boot.img
     -rwxr-xr-x 1 root root   1112 Jul 24 09:00 uEnv.txt
 
-You can either modify `fdtfile=` or you can modify `touchscreen_dtb=` and also
-add a *use_touchscreen* file to the `/boot` directory on the root filesystem.
+Modify the `fdtfile=` line.
 
-    root@beaglebone:~# touch > /boot/use_touchscreen
-
-Those are just some examples. You can easily devise your own strategy for
-choosing which *dtb* to load at boot.
-
-To use the nh5cape you will need the `ft5x06_ts` touchscreen driver
-
-    root@beaglebone:~# echo ft5x06_ts >> /dev/modules
+If you want touchscreen support for either of the New Haven displays
+the `ft5x06_ts` touchscreen driver needs to be loaded
 
 You can load it manually with *modprobe*
 

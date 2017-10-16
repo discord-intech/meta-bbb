@@ -1,12 +1,7 @@
 #!/bin/bash
 
 MACHINE=beaglebone
-SUPPORT_SCRIPTS="emmc-uEnv.txt \
-                 emmc_mk2parts.sh \
-                 emmc_mk4parts.sh \
-                 emmc_copy_boot.sh \
-                 emmc_copy_rootfs.sh \
-                 emmc_install.sh"
+SUPPORT_SCRIPTS="emmc-uEnv.txt"
 
 if [ "x${1}" = "x" ]; then
         echo -e "\nUsage: ${0} <block device> [ <image-type> ] ]\n"
@@ -25,8 +20,13 @@ else
 fi
 
 if [ -z "$OETMP" ]; then
-        echo -e "\nWorking from local directory"
-    SRCDIR=.
+	if [ -d ${HOME}/bbb/build/tmp/deploy/images/${MACHINE} ]; then
+		echo -e "\nUsing ${HOME}/elvaria/build/tmp"
+		SRCDIR=${HOME}/bbb/build/tmp
+	else
+		echo -e "\nWorking from local directory"
+		SRCDIR=.
+	fi
 else
         echo -e "\nOETMP: $OETMP"
 
@@ -62,11 +62,15 @@ for file in $SUPPORT_SCRIPTS; do
 	fi
 done
 
-DEV=/dev/${1}2
-
-if [ ! -b ${DEV} ]; then
-	echo "Block device ${DEV} not found"
-	exit 1
+if [ -b ${1} ]; then
+        DEV=${1}
+elif [ -b "/dev/${1}2" ]; then
+        DEV=/dev/${1}2
+elif [ -b "/dev/${1}p2" ]; then
+        DEV=/dev/${1}p2
+else
+        echo "Block device not found: /dev/${1}2 or /dev/${1}p2"
+        exit 1
 fi
 
 echo "Mounting ${DEV} to /media/card"
